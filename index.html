@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hiqween Active</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #ffffff;
+            --bg-warm: #fdf6f9;
+            --primary: #FF2D78;
+            --secondary: #e8006a;
+            --text-main: #1a0410;
+            --text-muted: #9a7080;
+        }
+
+        /* Reset & Base */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sora', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+            overflow-x: hidden;
+            color-scheme: light;
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animation */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .anim-element {
+            opacity: 0;
+            transform: translateY(24px);
+            animation-name: fadeUp;
+            animation-fill-mode: both;
+            animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* Staggered Delays */
+        .delay-0 {
+            animation-delay: 0.1s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.35s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.45s;
+            animation-duration: 0.7s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.55s;
+            animation-duration: 0.7s;
+        }
+
+        .delay-5 {
+            animation-delay: 0.65s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-6 {
+            animation-delay: 0.75s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-7 {
+            animation-delay: 0.85s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-8 {
+            animation-delay: 0.95s;
+            animation-duration: 0.7s;
+        }
+
+        .delay-9 {
+            animation-delay: 1.05s;
+            animation-duration: 0.6s;
+        }
+
+        .delay-10 {
+            animation-delay: 1.15s;
+            animation-duration: 0.5s;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            .anim-element,
+            *,
+            *::before,
+            *::after {
+                animation: none !important;
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+            }
+        }
+
+        /* Background Video */
+        #bg-video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(160deg, #fff0f6 0%, #fde8f0 50%, #ffd6e8 100%);
+        }
+
+        #bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        #bg-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.92) 100%);
+            z-index: 1;
+        }
+
+        /* Main Page Layout */
+        #main-page {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100dvh;
+            padding: 52px 24px 40px;
+            text-align: center;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* TOP SECTION */
+        .top-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container {
+            width: 76px;
+            height: 76px;
+            border: 2px solid rgba(255, 45, 120, 0.2);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .logo-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 50%;
+        }
+
+        .brand-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* MIDDLE SECTION */
+        .middle-section {
+            flex-grow: 1;
+            justify-content: center;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: 800;
+            letter-spacing: -0.025em;
+            line-height: 1.1;
+            margin-bottom: 16px;
+        }
+
+        .h1-line-1 {
+            display: block;
+            color: var(--text-main);
+        }
+
+        .h1-line-2 {
+            display: block;
+            color: var(--primary);
+        }
+
+        .tagline {
+            font-size: 13px;
+            font-weight: 800;
+            color: white;
+            background: var(--primary);
+            padding: 8px 20px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: inline-block;
+            box-shadow: 0 6px 16px rgba(255, 45, 120, 0.3);
+        }
+
+        .gratis-badge {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--primary);
+            background: #fff;
+            padding: 10px 24px;
+            border-radius: 12px;
+            border: 3px solid var(--primary);
+            box-shadow: 4px 4px 0px var(--primary);
+            display: inline-block;
+            letter-spacing: 0.05em;
+            animation-name: pulseGratis;
+            animation-duration: 2s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes pulseGratis {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.03);
+            }
+        }
+
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(255, 45, 120, 0.12);
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            background: white;
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .map-wrapper iframe {
+            width: 100%;
+            height: 180px;
+            display: block;
+            border: none;
+            filter: contrast(1.05) saturate(1.1);
+        }
+
+        .map-overlay-hint {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--primary);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 100px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: 1px solid rgba(255, 45, 120, 0.15);
+        }
+
+        .meta-pills {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .pill {
+            background: white;
+            border: 1.5px solid var(--primary);
+            border-radius: 100px;
+            padding: 8px 16px;
+            font-size: 13px;
+            color: var(--text-main);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(255, 45, 120, 0.1);
+        }
+
+        .pill-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* COUNTDOWN SECTION */
+        .countdown-section {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .countdown-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .countdown-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .cd-block {
+            background: #fff0f5;
+            border: 1px solid rgba(255, 45, 120, 0.2);
+            border-radius: 10px;
+            min-width: 58px;
+            padding: 8px 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .cd-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-main);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .cd-unit {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .cd-separator {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            /* aligns with numbers */
+        }
+
+        .cd-ended {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* BOTTOM SECTION */
+        .bottom-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+            width: 100%;
+        }
+
+        .btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 14px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+            padding: 17px;
+            font-size: 16px;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary);
+            font-weight: 700;
+            border: 1.5px solid rgba(255, 45, 120, 0.35);
+            padding: 16px;
+            font-size: 16px;
+        }
+
+        .btn-secondary:active {
+            transform: scale(0.97);
+            background: #fff0f5;
+        }
+
+        .ig-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            background: linear-gradient(135deg, #ff75a6 0%, var(--primary) 100%);
+            color: white !important;
+            padding: 8px 16px;
+            border-radius: 100px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 12px;
+            box-shadow: 0 4px 14px rgba(255, 45, 120, 0.25);
+            transition: transform 0.2s;
+        }
+
+        .ig-button:active {
+            transform: scale(0.96);
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+
+<body>
+
+    <!-- Background Video -->
+    <div id="bg-video-container">
+        <video id="bg-video" autoplay muted loop playsinline></video>
+        <div id="bg-overlay"></div>
+    </div>
+
+    <!-- Main Page -->
+    <main id="main-page">
+        <!-- TOP SECTION -->
+        <div class="top-section">
+            <div class="logo-container anim-element delay-0">
+                <img src="logo.png" alt="Hiqween Active Logo">
+            </div>
+            <a href="https://instagram.com/hiqween.active" class="ig-button anim-element delay-1" target="_blank"
+                rel="noopener">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+                @hiqween.active
+            </a>
+        </div>
+
+        <!-- MIDDLE SECTION -->
+        <div class="middle-section">
+            <h1>
+                <span class="h1-line-1 anim-element delay-3">Senam Bareng</span>
+                <span class="h1-line-2 anim-element delay-4">HIQWEEN</span>
+            </h1>
+            <div class="tagline anim-element delay-5">#bahagiatanpaflek</div>
+            <div class="anim-element delay-5">
+                <div class="gratis-badge">GRATIS!</div>
+            </div>
+        </div>
+
+        <!-- COUNTDOWN SECTION -->
+        <div class="countdown-section">
+            <!-- Meta pills moved above countdown per request -->
+            <div class="meta-pills anim-element delay-6" id="meta-pills" style="margin-bottom: 16px;">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Map Embed Container -->
+            <div id="map-container" class="anim-element delay-6"
+                style="width: 100%; display: none; margin-bottom: 24px;"></div>
+
+            <div class="countdown-label anim-element delay-7">Acara dimulai dalam</div>
+            <div class="countdown-grid anim-element delay-8" id="countdown-container">
+                <div class="cd-block">
+                    <span class="cd-number" id="cd-days">--</span>
+                    <span class="cd-unit">Hari</span>
+                </div>
+                <div class="cd-separator">:</div>
+                <div class="cd-block">
+                    <span class="cd-number" id="cd-hours">--</span>
+                    <span class="cd-unit">Jam</span>
+                </div>
+                <div class="cd-separator">:</div>
+                <div class="cd-block">
+                    <span class="cd-number" id="cd-minutes">--</span>
+                    <span class="cd-unit">Menit</span>
+                </div>
+                <div class="cd-separator">:</div>
+                <div class="cd-block">
+                    <span class="cd-number" id="cd-seconds">--</span>
+                    <span class="cd-unit">Detik</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM SECTION -->
+        <div class="bottom-section">
+            <a href="#" id="btn-daftar" class="btn btn-primary anim-element delay-9" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                Daftar Sekarang
+            </a>
+
+            <a href="https://chat.whatsapp.com/DcfwuYfVrJSKAwEpQYFe09" class="btn btn-secondary anim-element delay-9"
+                target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary)">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+                Lihat Dokumentasi
+            </a>
+        </div>
+    </main>
+
+    <script>
+        // DOM Elements
+        const bgVideo = document.getElementById('bg-video');
+        const metaPillsContainer = document.getElementById('meta-pills');
+        const mapContainer = document.getElementById('map-container');
+        const btnDaftar = document.getElementById('btn-daftar');
+        const countdownContainer = document.getElementById('countdown-container');
+
+        // Countdown Elements
+        const cdDays = document.getElementById('cd-days');
+        const cdHours = document.getElementById('cd-hours');
+        const cdMinutes = document.getElementById('cd-minutes');
+        const cdSeconds = document.getElementById('cd-seconds');
+
+        let countdownInterval;
+
+        function getSafeDate(dateString) {
+            if (!dateString) return null;
+            let safeDateStr = dateString;
+            // Safari/iOS fixes: ensure seconds are present and format is perfectly standard
+            if (safeDateStr.length === 16) {
+                safeDateStr += ':00';
+            }
+            return new Date(safeDateStr);
+        }
+
+        // Parse Date string for formatting
+        function formatEventDate(dateString) {
+            const date = getSafeDate(dateString);
+            if (!date || isNaN(date.getTime())) return null;
+
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+
+            const day = date.getDate();
+            const month = months[date.getMonth()];
+            const year = date.getFullYear();
+
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return {
+                tanggal: `${day} ${month} ${year}`,
+                jam: `${hours}.${minutes} WIB`
+            };
+        }
+
+        // ==========================================
+        // FIREBASE CONFIGURATION
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmYVqnQ36UWjL9s46gKIb5f8wRoIrFQkg",
+            authDomain: "hiqween-zumba.firebaseapp.com",
+            databaseURL: "https://hiqween-zumba-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hiqween-zumba",
+            storageBucket: "hiqween-zumba.firebasestorage.app",
+            messagingSenderId: "270967747774",
+            appId: "1:270967747774:web:6976613838f7e3549b5aef",
+            measurementId: "G-BTBBEH4GBN"
+        };
+
+        let db;
+        if (firebaseConfig.apiKey) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+
+        function initMainPage() {
+            if (db) {
+                // Read from Firebase Realtime Database
+                db.ref('hiqween_config').on('value', (snapshot) => {
+                    const config = snapshot.val() || {};
+                    applyConfig(config);
+                });
+            } else {
+                // Fallback to local storage
+                const rawConfig = localStorage.getItem('hiqween_config');
+                let config = {};
+                if (rawConfig) {
+                    try {
+                        config = JSON.parse(rawConfig);
+                    } catch (e) {
+                        console.error('Failed to parse config');
+                    }
+                }
+                applyConfig(config);
+            }
+        }
+
+        function applyConfig(config) {
+            // Video - Fixed autoplay policies issue
+            if (config.videoUrl && config.videoUrl.trim() !== '') {
+                if (bgVideo.src !== config.videoUrl) {
+                    bgVideo.src = config.videoUrl;
+                    // iOS Safari FIX: Explicitly call load() and play() when src is changed via JS
+                    bgVideo.load();
+                    bgVideo.play().catch(e => console.log('iOS Autoplay prevented:', e));
+                }
+                bgVideo.style.display = 'block';
+            } else {
+                bgVideo.src = '';
+                bgVideo.style.display = 'none';
+            }
+
+            // Button GForm
+            let gformLink = config.gform;
+            if (gformLink && gformLink.trim() !== '') {
+                if (!/^https?:\/\//i.test(gformLink.trim())) {
+                    gformLink = 'https://' + gformLink.trim();
+                }
+                btnDaftar.href = gformLink;
+            } else {
+                btnDaftar.href = 'https://docs.google.com/forms/d/1OUYjReHrHREL-eIF8hG_5RT0hj0FNXzgN6MRHfii1zs/viewform';
+            }
+
+            // Meta Pills (Order: Venue - Tanggal - Jam)
+            const eventDate = formatEventDate(config.tanggal);
+            const lokasiText = config.lokasi || 'Lokasi TBA';
+
+            let pillsHtml = '';
+
+            // 1. Venue
+            pillsHtml += `<div class="pill"><div class="pill-dot"></div>${lokasiText}</div>`;
+
+            // 2. Tanggal
+            if (eventDate) {
+                pillsHtml += `<div class="pill"><div class="pill-dot"></div>${eventDate.tanggal}</div>`;
+            } else {
+                pillsHtml += `<div class="pill"><div class="pill-dot"></div>Tanggal TBA</div>`;
+            }
+
+            // 3. Jam
+            if (eventDate) {
+                pillsHtml += `<div class="pill"><div class="pill-dot"></div>${eventDate.jam}</div>`;
+            }
+
+            metaPillsContainer.innerHTML = pillsHtml;
+
+            // Map Embed Generation (Premium Aesthetic)
+            if (config.lokasi && config.lokasi.trim() !== '') {
+                const mapQuery = encodeURIComponent(config.lokasi.trim());
+                mapContainer.innerHTML = `
+                    <div class="map-wrapper">
+                        <iframe src="https://maps.google.com/maps?q=${mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+                        <div class="map-overlay-hint">Ketuk peta untuk rute</div>
+                    </div>
+                `;
+                mapContainer.style.display = 'block';
+            } else {
+                mapContainer.style.display = 'none';
+                mapContainer.innerHTML = '';
+            }
+
+            // Countdown - Fixed invalid Date parsing on Safari/iOS
+            clearInterval(countdownInterval);
+            if (config.tanggal) {
+                const targetDate = getSafeDate(config.tanggal).getTime();
+                if (!isNaN(targetDate)) {
+                    updateCountdown(targetDate);
+                    countdownInterval = setInterval(() => updateCountdown(targetDate), 1000);
+                } else {
+                    resetCountdownUI();
+                }
+            } else {
+                resetCountdownUI();
+            }
+        }
+
+        function resetCountdownUI() {
+            if (cdDays) {
+                cdDays.textContent = '--';
+                cdDays.style.color = 'var(--text-muted)';
+                cdHours.textContent = '--';
+                cdHours.style.color = 'var(--text-muted)';
+                cdMinutes.textContent = '--';
+                cdMinutes.style.color = 'var(--text-muted)';
+                cdSeconds.textContent = '--';
+                cdSeconds.style.color = 'var(--text-muted)';
+            }
+        }
+
+        function updateCountdown(targetTime) {
+            const now = new Date().getTime();
+            const distance = targetTime - now;
+
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                countdownContainer.innerHTML = '<div class="cd-ended">🎉 Acara sedang berlangsung!</div>';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (cdDays) {
+                cdDays.textContent = days;
+                cdDays.style.color = 'var(--text-main)';
+                cdHours.textContent = String(hours).padStart(2, '0');
+                cdHours.style.color = 'var(--text-main)';
+                cdMinutes.textContent = String(minutes).padStart(2, '0');
+                cdMinutes.style.color = 'var(--text-main)';
+                cdSeconds.textContent = String(seconds).padStart(2, '0');
+                cdSeconds.style.color = 'var(--text-main)';
+            }
+        }
+
+        // Initialize Page
+        initMainPage();
+    </script>
+</body>
+
+</html>

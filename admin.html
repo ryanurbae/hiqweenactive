@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin - Hiqween Active</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-warm: #fdf6f9;
+            --primary: #FF2D78;
+            --text-main: #1a0410;
+            --text-muted: #9a7080;
+            --error-color: #d32f2f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Sora', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-warm);
+            color: var(--text-main);
+            color-scheme: light;
+            min-height: 100dvh;
+            padding: 40px 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .admin-card {
+            max-width: 420px;
+            margin: auto;
+            background: white;
+            border: 1px solid rgba(255, 45, 120, 0.15);
+            border-radius: 20px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(255, 45, 120, 0.05);
+        }
+
+        .admin-back {
+            font-size: 13px;
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 24px;
+        }
+
+        .admin-title {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--primary);
+            font-weight: 700;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 14px;
+            background: white;
+            border: 1px solid rgba(255, 45, 120, 0.2);
+            color: var(--text-main);
+            font-family: 'Sora', sans-serif;
+            font-size: 14px;
+            border-radius: 10px;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .helper-text {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            font-size: 12px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .btn-admin-save,
+        .btn-admin-login {
+            width: 100%;
+            background: var(--primary);
+            color: white;
+            font-weight: 800;
+            border-radius: 12px;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            margin-top: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-admin-save:active,
+        .btn-admin-login:active {
+            opacity: 0.9;
+        }
+
+        .btn-admin-reset,
+        .btn-admin-logout {
+            width: 100%;
+            background: white;
+            color: var(--text-muted);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 12px;
+            margin-top: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+
+<body>
+
+    <!-- Login View -->
+    <div id="login-view" class="admin-card">
+        <div class="admin-title">🔒 Admin Login</div>
+        <div id="login-error" class="error-message hidden">Username atau password salah!</div>
+
+        <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" id="input-username" class="form-input" placeholder="Masukkan username">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" id="input-password" class="form-input" placeholder="Masukkan password">
+        </div>
+
+        <button id="btn-login" class="btn-admin-login">Login</button>
+        <a href="index.html" class="btn-admin-reset"
+            style="display:block; text-align:center; text-decoration:none;">Kembali ke Halaman Utama</a>
+    </div>
+
+    <!-- Admin View -->
+    <div id="admin-view" class="admin-card hidden">
+        <a href="index.html" class="admin-back">← Kembali ke halaman utama</a>
+        <div class="admin-title">⚙️ Pengaturan Event</div>
+
+        <div class="form-group">
+            <label class="form-label">Tanggal & Jam Acara</label>
+            <input type="datetime-local" id="input-tanggal" class="form-input">
+            <span class="helper-text" style="margin-top: 6px; color: #d32f2f;">(Jika hp/laptop Anda menggunakan AM/PM,
+                landing page akan tetap menampilkannya otomatis dalam 24-Jam)</span>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Lokasi / Venue</label>
+            <input type="text" id="input-lokasi" class="form-input" placeholder="Contoh: Gor Jatidiri">
+            <span class="helper-text" style="margin-top: 6px;">Ketik nama tempat, peta akan muncul di bawah sebagai
+                preview.</span>
+            <div id="admin-map-preview"
+                style="margin-top: 10px; display: none; border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,45,120,0.2);">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Link GForm Pendaftaran</label>
+            <input type="url" id="input-gform" class="form-input" placeholder="https://docs.google.com/forms/...">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Cloudinary Video URL</label>
+            <input type="url" id="input-video" class="form-input"
+                placeholder="https://res.cloudinary.com/.../video.mp4">
+            <span class="helper-text">Paste URL lengkap dari Cloudinary.<br>Contoh:
+                https://res.cloudinary.com/namakamu/video/upload/namafile.mp4</span>
+        </div>
+
+        <button id="btn-save" class="btn-admin-save">Simpan & Terapkan</button>
+        <button id="btn-reset" class="btn-admin-reset">Reset ke default</button>
+        <button id="btn-logout" class="btn-admin-logout"
+            style="margin-top: 24px; border-color: rgba(211, 47, 47, 0.3); color: #d32f2f;">Logout</button>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginView = document.getElementById('login-view');
+        const adminView = document.getElementById('admin-view');
+
+        // Login Elements
+        const inputUsername = document.getElementById('input-username');
+        const inputPassword = document.getElementById('input-password');
+        const btnLogin = document.getElementById('btn-login');
+        const loginError = document.getElementById('login-error');
+
+        // Admin Elements
+        const inputTanggal = document.getElementById('input-tanggal');
+        const inputLokasi = document.getElementById('input-lokasi');
+        const inputGform = document.getElementById('input-gform');
+        const inputVideo = document.getElementById('input-video');
+        const btnSave = document.getElementById('btn-save');
+        const btnReset = document.getElementById('btn-reset');
+        const btnLogout = document.getElementById('btn-logout');
+
+        // Initialization
+        function checkAuth() {
+            const isAuth = sessionStorage.getItem('hiqween_auth');
+            if (isAuth === 'true') {
+                loginView.classList.add('hidden');
+                adminView.classList.remove('hidden');
+                loadAdminData();
+            } else {
+                loginView.classList.remove('hidden');
+                adminView.classList.add('hidden');
+            }
+        }
+
+        // Login Logic
+        btnLogin.addEventListener('click', () => {
+            const user = inputUsername.value;
+            const pass = inputPassword.value;
+
+            if (user === 'hiqweenactive' && pass === 'senadakreasi') {
+                sessionStorage.setItem('hiqween_auth', 'true');
+                loginError.classList.add('hidden');
+                inputUsername.value = '';
+                inputPassword.value = '';
+                checkAuth();
+            } else {
+                loginError.classList.remove('hidden');
+            }
+        });
+
+        // Logout Logic
+        btnLogout.addEventListener('click', () => {
+            sessionStorage.removeItem('hiqween_auth');
+            checkAuth();
+        });
+
+        // Add Enter key support for login
+        inputPassword.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                btnLogin.click();
+            }
+        });
+
+        // ==========================================
+        // FIREBASE CONFIGURATION
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmYVqnQ36UWjL9s46gKIb5f8wRoIrFQkg",
+            authDomain: "hiqween-zumba.firebaseapp.com",
+            databaseURL: "https://hiqween-zumba-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "hiqween-zumba",
+            storageBucket: "hiqween-zumba.firebasestorage.app",
+            messagingSenderId: "270967747774",
+            appId: "1:270967747774:web:6976613838f7e3549b5aef",
+            measurementId: "G-BTBBEH4GBN"
+        };
+
+        let db;
+        if (firebaseConfig.apiKey) {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+
+        // Admin Functions
+        function loadAdminData() {
+            if (db) {
+                db.ref('hiqween_config').once('value').then((snapshot) => {
+                    const config = snapshot.val() || {};
+                    inputTanggal.value = config.tanggal || '';
+                    inputLokasi.value = config.lokasi || '';
+                    inputGform.value = config.gform || '';
+                    inputVideo.value = config.videoUrl || '';
+                    updateMapPreview();
+                });
+            } else {
+                const rawConfig = localStorage.getItem('hiqween_config');
+                if (rawConfig) {
+                    try {
+                        const config = JSON.parse(rawConfig);
+                        inputTanggal.value = config.tanggal || '';
+                        inputLokasi.value = config.lokasi || '';
+                        inputGform.value = config.gform || '';
+                        inputVideo.value = config.videoUrl || '';
+                        updateMapPreview();
+                    } catch (e) { }
+                }
+            }
+        }
+
+        // Live Map Preview Logic
+        const adminMapPreview = document.getElementById('admin-map-preview');
+        let mapTimeout;
+
+        function updateMapPreview() {
+            const query = inputLokasi.value.trim();
+            if (query !== '') {
+                const mapQuery = encodeURIComponent(query);
+                adminMapPreview.innerHTML = `<iframe width="100%" height="140" src="https://maps.google.com/maps?q=${mapQuery}&t=&z=15&ie=UTF8&iwloc=&output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>`;
+                adminMapPreview.style.display = 'block';
+            } else {
+                adminMapPreview.style.display = 'none';
+                adminMapPreview.innerHTML = '';
+            }
+        }
+
+        inputLokasi.addEventListener('input', () => {
+            clearTimeout(mapTimeout);
+            mapTimeout = setTimeout(updateMapPreview, 800); // Wait 800ms after user stops typing
+        });
+
+        btnSave.addEventListener('click', () => {
+            const config = {
+                tanggal: inputTanggal.value,
+                lokasi: inputLokasi.value,
+                gform: inputGform.value,
+                videoUrl: inputVideo.value,
+                secret: 'senadakreasi' // Secret key untuk membypass Firebase Rules
+            };
+
+            if (db) {
+                db.ref('hiqween_config').set(config).then(() => {
+                    alert('Pengaturan berhasil disimpan ke Database (Firebase)!');
+                    window.location.href = "index.html";
+                }).catch((error) => {
+                    alert('Gagal menyimpan ke database: ' + error.message);
+                });
+            } else {
+                // Jangan simpan secret di localstorage untuk kebersihan
+                delete config.secret;
+                localStorage.setItem('hiqween_config', JSON.stringify(config));
+                alert('Pengaturan berhasil disimpan (Local Mode)!');
+                window.location.href = "index.html";
+            }
+        });
+
+        btnReset.addEventListener('click', () => {
+            if (confirm('Apakah Anda yakin ingin mereset semua pengaturan ke default?')) {
+                if (db) {
+                    db.ref('hiqween_config').remove().then(() => {
+                        alert('Pengaturan berhasil di-reset!');
+                        inputTanggal.value = '';
+                        inputLokasi.value = '';
+                        inputGform.value = '';
+                        inputVideo.value = '';
+                        updateMapPreview();
+                    });
+                } else {
+                    localStorage.removeItem('hiqween_config');
+                    alert('Pengaturan berhasil di-reset!');
+                    inputTanggal.value = '';
+                    inputLokasi.value = '';
+                    inputGform.value = '';
+                    inputVideo.value = '';
+                    updateMapPreview();
+                }
+            }
+        });
+
+        // Run on load
+        checkAuth();
+
+    </script>
+</body>
+
+</html>
